@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron jumbotron-fluid bg-light">
+        <div class="container">
+            <h1 class="display-4">Cómputo en la nube</h1>
+            <p class="lead">Aplicación de todo's</p>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col d-flex justify-content-center">
+        <a class="btn btn-primary m-2" href="{% url 'login' %}">Inicia sesión</a>
+        <a class="btn btn-primary m-2" href="{% url 'signup' %}">Regístrate</a>
+    </div>
+    </div>
+{% endblock %}

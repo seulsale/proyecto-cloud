@@ -6,8 +6,10 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import resolve_url
 
+LOGIN_URL = '/login'
 
-def user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIELD_NAME):
+
+def user_passes_test(test_func, login_url=LOGIN_URL, redirect_field_name=REDIRECT_FIELD_NAME):
     """
     Decorator for views that checks that the user passes the given test,
     redirecting to the log-in page if necessary. The test should be a callable
@@ -37,7 +39,7 @@ def user_passes_test(test_func, login_url=None, redirect_field_name=REDIRECT_FIE
     return decorator
 
 
-def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None):
+def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=LOGIN_URL):
     """
     Decorator for views that checks that the user is logged in, redirecting
     to the log-in page if necessary.
@@ -52,7 +54,7 @@ def login_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
     return actual_decorator
 
 
-def permission_required(perm, login_url=None, raise_exception=False):
+def permission_required(perm, login_url=LOGIN_URL, raise_exception=False):
     """
     Decorator for views that checks whether a user has a particular permission
     enabled, redirecting to the log-in page if necessary.

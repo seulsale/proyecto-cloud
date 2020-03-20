@@ -8,9 +8,13 @@
         </div>
     </div>
     <div class="row">
-    <div class="col d-flex justify-content-center">
-        <a class="btn btn-primary m-2" href="{% url 'login' %}">Inicia sesión</a>
-        <a class="btn btn-primary m-2" href="{% url 'signup' %}">Regístrate</a>
-    </div>
+        <div class="col d-flex justify-content-center">
+            {% if not user.is_authenticated %}
+                <a class="btn btn-primary m-2" href="{% url 'login' %}">Inicia sesión</a>
+                <a class="btn btn-primary m-2" href="{% url 'signup' %}">Regístrate</a>
+            {% else %}
+                <a class="btn btn-primary m-2" href="{% url 'user_index' %}">Ir a TODO's</a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

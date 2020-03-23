@@ -79,18 +79,28 @@ WSGI_APPLICATION = 'cloud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# Database configuration for Azure SQL Database service
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'sql_server.pyodbc',
+#         'NAME': <YOUR_DATABASE_NAME>,
+#         'USER': <YOUR_DATABASE_USER>,
+#         'PASSWORD': <YOUR_DATABASE_PASSWORD>,
+#         'HOST': 'serv-cloud.database.windows.net',  # This might be different
+#         'PORT': '',
+#         'OPTIONS': {
+#             'driver': 'ODBC Driver 13 for SQL Server'
+#         }
+#     },
+# }
+
+
+# Database configuration for local development
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',
-        'NAME': 'cloud',
-        'USER': 'teamsm',
-        'PASSWORD': 'Its12345',
-        'HOST': 'serv-cloud.database.windows.net',
-        'PORT': '',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 13 for SQL Server'
-        }
-    },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
 

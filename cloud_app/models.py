@@ -7,14 +7,14 @@ class TODO(models.Model):
     owner = models.ForeignKey(User, models.CASCADE)
     text = models.CharField(max_length=500)
     completed = models.BooleanField(default=False)
-    created = models.DateTimeField()
-    updated = models.DateTimeField()
+    created = models.DateTimeField(blank=True)
+    updated = models.DateTimeField(blank=True)
 
     def __str__(self):
         return self.text
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
+    def save(self, *args, **kwargs):
         if not self.id:
             self.created = timezone.now()
         self.updated = timezone.now()
+        return super(TODO, self).save(*args, **kwargs)

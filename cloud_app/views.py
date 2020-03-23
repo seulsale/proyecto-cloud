@@ -2,9 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from .models import TODO
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 
 def index(request):
@@ -49,5 +52,28 @@ def logout_view(request):
     return redirect('index')
 
 
-def user_index(request):
-    return render(request, 'user/index.html')
+class TODOList(ListView):
+    model = TODO
+    template_name = 'user/index.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TODOList, self).get_context_data(**kwargs)
+        context['todos'] = TODO.objects.filter(owner_id=self.request.user.id).order_by('-id')
+        return context
+
+
+class TODOCreate(CreateView):
+    model = TODO
+    fields = ['text', 'owner']
+    success_url = reverse_lazy('user_index')
+
+
+class TODOUpdate(UpdateView):
+    model = TODO
+    fields = ['completed']
+    success_url = reverse_lazy('user_index')
+
+
+class TODODelete(DeleteView):
+    model = TODO
+    success_url = reverse_lazy('user_index')

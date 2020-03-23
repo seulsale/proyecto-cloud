@@ -1,34 +1,62 @@
 {% extends 'user/base.html' %}
 
 {% block content %}
-    <table class="table">
+    <form action="{% url 'user_add' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="owner" value="{{ user.id }}">
+        <div class="input-group mb-3">
+            <input type="text" name="text" class="form-control" placeholder="Escribe un recordatorio"
+                   aria-label="Recipient's username"
+                   aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <input class="btn btn-outline-primary" type="submit" value="Guardar" id="button-addon2"/>
+            </div>
+        </div>
+    </form>
+    <table class="table table-hover">
         <thead class="thead-dark">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">ID</th>
+            <th scope="col">Creado</th>
+            <th scope="col">Terminado</th>
+            <th scope="col">TODO</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
+        {% for todo in todos %}
+            <tr>
+                <th scope="row">{{ todo.id }}</th>
+                <td>
+                    {{ todo.created }}
+                </td>
+                <td>
+                    {% if todo.completed %}
+                        {{ todo.updated }}
+                    {% else %}
+                        Sin completar
+                    {% endif %}
+                </td>
+                <td>{% if todo.completed %}
+                    <del>{{ todo.text }}</del>
+                {% else %}
+                    {{ todo.text }}
+                {% endif %}</td>
+                <td class="d-flex justify-content-end">
+                    {% if not todo.completed %}
+                        <form action="{% url 'user_update' todo.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="completed" value="true">
+                            <input class="btn btn-outline-success mr-2" type="submit" value="&checkmark;"/>
+                        </form>
+                    {% endif %}
+                    <form action="{% url 'user_delete' todo.id %}" method="post">
+                        {% csrf_token %}
+                        <input class="btn btn-outline-danger" type="submit" value="&times;"/>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}
